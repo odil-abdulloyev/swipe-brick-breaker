@@ -1,0 +1,11 @@
+# npm modules
+node_modules
+
+# git config file
+.git
+
+# built files folder
+dist
+
+# sass cache
+.sass-cache

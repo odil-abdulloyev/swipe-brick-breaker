@@ -1,0 +1,42 @@
+{
+  "name": "swipebreakbreaker-clone",
+  "version": "1.0.0",
+  "description": "Browser version of Swipe Break Breaker game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production",
+    "dev": "webpack --watch --mode development",
+    "eslint": "./node_modules/.bin/eslint src/js --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/odil-abdulloyev/swipeBreakBreaker-clone.git"
+  },
+  "author": "Odil",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/odil-abdulloyev/swipeBreakBreaker-clone/issues"
+  },
+  "homepage": "https://github.com/odil-abdulloyev/swipeBreakBreaker-clone#readme",
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-transform-runtime": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^5.0.1",
+    "eslint": "^7.16.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^4.5.0",
+    "mini-css-extract-plugin": "^1.3.3",
+    "node-sass": "^5.0.0",
+    "sass-loader": "^10.1.0",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.10.3",
+    "webpack-cli": "^4.2.0"
+  }
+}

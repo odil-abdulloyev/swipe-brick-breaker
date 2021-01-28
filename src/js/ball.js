@@ -10,6 +10,18 @@ export default class Ball extends Circle {
     this.speed = speed;
   }
 
+  stop() {
+    this.vx = 0;
+    this.vy = 0;
+  }
+
+  normalizeSpeed() {
+    if (this.vy === 0) {
+      this.vx = Math.round(0.85 * this.options.BALL_SPEED);
+      this.vy = Math.round(0.15 * this.options.BALL_SPEED);
+    }
+  }
+
   draw(color) {
     this.context.save();
     this.context.fillStyle = color;

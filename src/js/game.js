@@ -18,12 +18,13 @@ const GAME = {
 GAME.createBlocksAndBonus = function () {
   const rand = getCachedRandom(0, this.options.COLUMNS);
   let count = 2;
+  const getRandomCount = (arr) => arr[Math.floor(Math.random() * arr.length)];
   if (this.state.level > 100) {
-    count = 5;
+    count = getRandomCount([2, 3, 4, 5]);
   } else if (this.state.level > 50) {
-    count = 4;
+    count = getRandomCount([2, 3, 4]);
   } else if (this.state.level > 20) {
-    count = 3;
+    count = getRandomCount([2, 3]);
   }
   for (let i = 0; i < count; ++i) {
     const blockX = rand() * (this.options.BLOCK_WIDTH + this.options.INTERVAL_SIZE);
@@ -98,7 +99,7 @@ GAME.setBlockColor = function (block) {
   if (hp <= 0.3 * level) {
     color = this.options.BLOCK_LIGHT_COLOR;
   } else if (hp <= 0.6 * level) {
-    color = this.options.BLOCK_MEDIUM_COLOR;
+    color = this.options.BLOCK_NORMAL_COLOR;
   } else {
     color = this.options.BLOCK_DARK_COLOR;
   }
@@ -145,39 +146,37 @@ GAME.startNewStage = function () {
 };
 
 GAME.handleBallAndBlockCollision = function (ball, block) {
-  if (collisionDetected(block, ball)) {
-    const topCenter = new Point2D(
-      block.position.x + block.width / 2, block.position.y
-    );
-    const bottomCenter = new Point2D(
-      block.position.x + block.width / 2, block.position.y + block.height
-    );
-    const leftCenter = new Point2D(
-      block.position.x, block.position.y + block.height / 2
-    );
-    const rightCenter = new Point2D(
-      block.position.x + block.width, block.position.y + block.height / 2
-    );
-
-    const { center } = ball;
-
-    const dist1 = distance(center, topCenter);
-    const dist2 = distance(center, bottomCenter);
-    const dist3 = distance(center, leftCenter);
-    const dist4 = distance(center, rightCenter);
-    const minDist = Math.min(dist1, dist2, dist3, dist4);
-
-    if (minDist === dist1) {
-      ball.vy = -Math.abs(ball.vy);
+  const getPoint = (value, min, max) => {
+    if (value <= min || value >= max) {
+      return Math.abs(max - value) < Math.abs(min - value) ? max : min;
     }
-    if (minDist === dist2) {
-      ball.vy = Math.abs(ball.vy);
+    return value;
+  };
+  const pointX = getPoint(ball.center.x, block.position.x, block.position.x + block.width);
+  const pointY = getPoint(ball.center.y, block.position.y, block.position.y + block.height);
+  if (distance(ball.center, new Point2D(pointX, pointY)) <= ball.radius) {
+    let nx = ball.center.x - pointX;
+    let ny = ball.center.y - pointY;
+    const len = Math.sqrt(nx * nx + ny * ny);
+    if (len <= ball.radius
+      && (pointX === block.position.x || pointX === block.position.x + block.width)
+      && (pointY === block.position.y || pointY === block.position.y + block.height)
+    ) {
+      nx /= len;
+      ny /= len;
+      const projection = ball.vx * nx + ball.vy * ny;
+      ball.vx -= Math.round(2 * projection * nx);
+      ball.vy -= Math.round(2 * projection * ny);
+      ball.normalizeSpeed();
+    } else if (pointX === block.position.x + block.width || pointX === block.position.x) {
+      ball.position.x = pointX === block.position.x + block.width ? pointX : pointX - ball.width;
+      ball.vx *= -1;
     }
-    if (minDist === dist3) {
-      ball.vx = -Math.abs(ball.vx);
-    }
-    if (minDist === dist4) {
-      ball.vx = Math.abs(ball.vx);
+    if (pointY === block.position.y + block.height || pointY === block.position.y) {
+      ball.position.y = pointY === block.position.y + block.height
+        ? pointY
+        : pointY - ball.height;
+      ball.vy *= -1;
     }
     if (--block.hp === 0) {
       const { blocks } = this.objects;
@@ -196,8 +195,7 @@ GAME.handleBallAndWallCollision = function (ball) {
     if (ball.position.y <= 0) {
       ball.vy *= -1;
     } else {
-      ball.vx = 0;
-      ball.vy = 0;
+      ball.stop();
     }
   }
 };
@@ -233,8 +231,7 @@ GAME.animate = function () {
       this.handleBallAndBonusCollision(ball, bonus);
     });
     if (ball.position.y + ball.height >= this.objects.field.height) {
-      ball.vx = 0;
-      ball.vy = 0;
+      ball.stop();
       if (firstBall) {
         firstBall = false;
         this.state.startPosition = new Point2D(ball.position.x, this.state.startPosition.y);
@@ -266,7 +263,6 @@ GAME.handleMouseDown = function (e) {
 GAME.handleMouseMove = function (e) {
   if (this.objects.aim.isActive && !this.objects.aim.isBlocked) {
     this.objects.aim.handleMouseMove(e);
-    this.objects.aim.draw(this.options.AIM_COLOR);
     this.strictClearField();
     this.redrawObjects();
   }
@@ -276,11 +272,13 @@ GAME.handleMouseUp = function () {
   if (!this.objects.aim.isBlocked) {
     this.objects.aim.isActive = false;
     this.objects.aim.isBlocked = true;
-    const calcSpeed = (x) => (this.options.BALL_SPEED * x)
-      / Math.sqrt(this.objects.aim.vx ** 2 + this.objects.aim.vy ** 2);
+    const calcSpeed = (x) => Math.round(
+      (this.options.BALL_SPEED * x) / Math.sqrt(this.objects.aim.vx ** 2 + this.objects.aim.vy ** 2)
+    );
     this.objects.balls.forEach((ball) => {
       ball.setVx(calcSpeed(this.objects.aim.vx));
       ball.setVy(calcSpeed(this.objects.aim.vy));
+      ball.normalizeSpeed();
     });
     this.state.requests.push(window.requestAnimationFrame(() => {
       this.animate();

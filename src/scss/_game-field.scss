@@ -1,6 +1,6 @@
-#game-field {
+.game-field {
   display: block;
   margin: auto;
-  background: #ccc;
+  background: $game-field-color;
   border: 3px solid #000;
 }

@@ -1,0 +1,19 @@
+const gameOptions = {
+  BLOCK_HEIGHT: 55,
+  INTERVAL_SIZE: 3,
+  ROWS: 10,
+  COLUMNS: 6,
+  BALL_RADIUS: 10,
+  BALL_SPEED: 10,
+  BLOCK_DARK_COLOR: '#fe494f',
+  BLOCK_MEDIUM_COLOR: '#fe755c',
+  BLOCK_LIGHT_COLOR: '#f29e74',
+  BLOCK_WIDTH: 100,
+  BALL_COLOR: '#5aa7f3',
+  BONUS_COLOR: '#3ad361',
+  BONUS_RADIUS: 12,
+  AIM_COLOR: '#a7bed3',
+  BALL_SHOOT_TIMEOUT: 100
+};
+
+export default gameOptions;

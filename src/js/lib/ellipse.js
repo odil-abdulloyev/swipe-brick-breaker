@@ -2,10 +2,6 @@ import Shape from './shape';
 import Point2D from './point2d';
 
 export default class Ellipse extends Shape {
-  constructor(context, position, width, height) {
-    super(context, position, width, height);
-  }
-
   get center() {
     return new Point2D(
       this.position.x + Math.floor(this.width / 2),

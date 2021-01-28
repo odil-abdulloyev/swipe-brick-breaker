@@ -1,0 +1,33 @@
+.game-over {
+  position: absolute;
+  top: calc(-1 * #{$game-over-modal-height});
+  left: calc(50vw - #{$game-over-modal-width} / 2);
+  width: $game-over-modal-width;
+  height: $game-over-modal-height;
+  font-family: Roboto, sans-serif;
+  transition: transform 0.3s ease-in;
+  &.active {
+    transform: translateY(calc(#{$game-over-modal-height} / 2 + 50vh));
+  }
+  &__title {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 28px;
+    font-weight: 500;
+  }
+  &__score {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 22px;
+    color: #333;
+    &::after {
+      content: attr(data-score);
+    }
+  }
+  &__new-game-btn {
+    width: 110px;
+    margin: 40px auto;
+    padding: 10px 15px;
+    border: none;
+  }
+}

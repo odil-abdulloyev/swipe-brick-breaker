@@ -4,7 +4,6 @@
   "description": "Browser version of Swipe Break Breaker game",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production",
     "dev": "webpack --watch --mode development",
     "eslint": "./node_modules/.bin/eslint src/js --fix"

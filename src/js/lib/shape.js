@@ -16,7 +16,6 @@ export default class Shape {
       this.context.stroke();
     }
     this.context.restore();
-    return this;
   }
 
   clear() {
@@ -26,33 +25,32 @@ export default class Shape {
       this.width + 2 * this.context.lineWidth,
       this.height + 2 * this.context.lineWidth,
     );
-    return this;
   }
 
   move() {
     this.position.x += this.vx;
     this.position.y += this.vy;
-    return this;
   }
 
   moveOn(vx, vy) {
     this.position.x += vx;
     this.position.y += vy;
-    return this;
+  }
+
+  moveTo(x, y) {
+    this.position.x = x;
+    this.position.y = y;
   }
 
   setVx(vx) {
     this.vx = vx;
-    return this;
   }
 
   setVy(vy) {
     this.vy = vy;
-    return this;
   }
 
   setPosition(position) {
     this.position = position;
-    return this;
   }
 }

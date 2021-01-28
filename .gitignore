@@ -9,3 +9,6 @@ dist
 
 # sass cache
 .sass-cache
+
+# ternjs configs
+.tern-project

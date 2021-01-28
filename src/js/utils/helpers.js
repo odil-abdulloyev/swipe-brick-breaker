@@ -1,22 +1,16 @@
-export function createDOMElement(tagName, options, innerHTML) {
-  const element = document.createElement(tagName);
-  if (options) {
-    Object.keys(options).forEach((key) => {
-      element[key] = options[key];
-    });
-  }
-  if (innerHTML) {
-    if (typeof innerHTML === 'string') {
-      element.innerHTML = innerHTML;
-    } else {
-      element.append(innerHTML);
+export default function getCachedRandom(a, b) {
+  const cache = [];
+  let calls = 0;
+  return function fn() {
+    if (calls >= b - a) {
+      throw new Error(`Too much calls. This function can be called no more than ${b - a - 1} times`);
     }
-  }
-  return element;
-}
-
-export function renderDOMElement(element, parent) {
-  if (parent) {
-    parent.append(element);
-  }
+    const res = Math.floor(a + Math.random() * (b - a));
+    if (cache.includes(res)) {
+      return fn();
+    }
+    cache.push(res);
+    ++calls;
+    return res;
+  };
 }

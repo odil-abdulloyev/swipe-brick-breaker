@@ -1,0 +1,25 @@
+.modal {
+  box-sizing: border-box;
+  background: #fff;
+  z-index: 10;
+  font-family: sans-serif;
+  color: #787878;
+  &__button {
+    box-sizing: border-box;
+    background: #e47332;
+    display: block;
+    outline: none;
+    padding: 10px 15px;
+    border: none;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    &:active {
+      background: #bb5d27;
+    }
+    &:focus {
+      border: 1px solid #888;
+    }
+  }
+}

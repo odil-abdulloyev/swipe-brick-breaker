@@ -1,2 +1,6 @@
-@import '_reset.scss';
-@import '_game-field.scss';
+@import '_reset';
+@import '_constants';
+@import './components/_modal';
+@import '_game-field';
+@import '_game-over';
+@import '_overlay';

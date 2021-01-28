@@ -13,6 +13,8 @@ module.exports = {
   },
   rules: {
     'no-plusplus': 'off',
-    'comma-dangle': 'off'
+    'comma-dangle': 'off',
+    'no-param-reassign': 'off',
+    'func-names': 'off'
   },
 };

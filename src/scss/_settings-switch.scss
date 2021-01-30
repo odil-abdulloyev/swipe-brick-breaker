@@ -1,0 +1,22 @@
+$switch-width: 50px;
+$switch-height: 28px;
+
+.switch {
+  width: $switch-width;
+  height: $switch-height;
+}
+
+.switch-slider {
+  border-radius: $switch-height;
+}
+
+.switch-slider::before {
+  height: 24px;
+  width: 24px;
+  left: 2px;
+  bottom: 2px;
+}
+
+input:checked + .switch-slider:before {
+  transform: translateX(22px);
+}

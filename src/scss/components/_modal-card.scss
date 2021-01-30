@@ -1,0 +1,39 @@
+$close-button-hover-color: #ac120c;
+
+.modal-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: all .3s ease-in;
+  padding: 20px;
+  max-height: 420px;
+  max-width: 660px;
+  overflow: auto;
+  &__title {
+    font-size: 28px;
+    padding: 5px 0;
+    text-align: center;
+    border-bottom: 1px solid $border-color;
+  }
+  button {
+    width: 100px;
+    margin: 30px auto 0 auto;
+  }
+  &__close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 2px 7px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+    &:hover {
+      background: $close-button-hover-color;
+      color: #fff;
+    }
+  }
+  &.active {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}

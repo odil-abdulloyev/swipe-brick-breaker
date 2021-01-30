@@ -22,7 +22,7 @@ gameObjects.context = gameObjects.field.getContext('2d');
 
 gameObjects.aim = new Aim(
   gameObjects.context,
-  new Point2D(gameObjects.field.width / 2, gameObjects.field.height)
+  new Point2D(gameObjects.field.width / 2, gameObjects.field.height - gameOptions.BALL_RADIUS)
 );
 
 export default gameObjects;

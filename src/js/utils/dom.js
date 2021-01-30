@@ -8,6 +8,8 @@ export function createDOMElement(tagName, options, innerHTML) {
   if (innerHTML) {
     if (typeof innerHTML === 'string') {
       element.innerHTML = innerHTML;
+    } else if (Array.isArray(innerHTML)) {
+      element.append(...innerHTML);
     } else {
       element.append(innerHTML);
     }

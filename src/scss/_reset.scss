@@ -5,6 +5,29 @@
 }
 
 body {
-  font-family: sans-serif;
+  min-width: 950px;
+  background: $background-color;
+  font-family: Nunito, sans-serif;
   font-size: 16px;
+  font-weight: 400;
+  font-style: normal;
+  color: $text-color;
+}
+
+.app {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+body.dark {
+  background: $background-color-dark;
+  color: $text-color-dark;
+}
+
+h1 {
+  text-align: center;
+  font-size: 24px;
+  padding: 0 0 10px 0;
 }

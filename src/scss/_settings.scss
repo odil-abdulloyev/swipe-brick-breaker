@@ -1,0 +1,13 @@
+.settings {
+  width: 400px;
+  text-align: center;
+  padding: 20px;
+
+  .item {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 20px;
+    font-size: 22px;
+  }
+}

@@ -1,6 +1,7 @@
 import gameOptions from './game-options';
 import gameState from './game-state';
 import gameObjects from './game-objects';
+import gameDOMElements from './game-dom-elements';
 
 import Block from './block';
 import Ball from './ball';
@@ -12,7 +13,8 @@ import getCachedRandom from './utils/helpers';
 const GAME = {
   options: gameOptions,
   objects: gameObjects,
-  state: gameState
+  state: gameState,
+  DOMElements: gameDOMElements
 };
 
 GAME.createBlocksAndBonus = function () {
@@ -66,13 +68,15 @@ GAME.strictClearField = function () {
 };
 
 GAME.trailingClearField = function () {
-  this.objects.context.fillStyle = 'rgba(230, 230, 230, 0.4)';
+  this.objects.context.save();
+  this.objects.context.fillStyle = `${this.options.FIELD_COLOR}60`;
   this.objects.context.fillRect(0, 0, this.objects.field.width, this.objects.field.height);
+  this.objects.context.restore();
 };
 
 GAME.redrawObjects = function () {
   this.trailingClearField();
-  if (this.objects.aim.isActive) {
+  if (this.objects.aim.isActive && this.state.aimingEnabled) {
     this.objects.aim.draw(this.options.AIM_COLOR);
   }
   this.objects.bonuses.forEach((bonus) => {
@@ -112,6 +116,13 @@ GAME.gameOver = function () {
   );
 };
 
+GAME.updateUI = function () {
+  this.DOMElements.scoreElements.forEach((el) => {
+    el.dataset.score = this.state.level - 1;
+  });
+  this.DOMElements.ballsElement.dataset.balls = this.objects.balls.length;
+};
+
 GAME.startNewStage = function () {
   ++this.state.level;
   this.objects.aim.isBlocked = false;
@@ -127,15 +138,20 @@ GAME.startNewStage = function () {
     }
   });
   if (this.gameOver()) {
-    document.querySelector('.game-over').classList.add('active');
-    document.querySelector('#overlay').classList.add('active');
-    document.querySelector('.game-over__score').dataset.score = this.state.level;
+    this.DOMElements.gameOverModalElement.classList.add('active');
+    this.DOMElements.overlayElement.classList.add('active');
+    this.playSound(this.DOMElements.gameOverSound);
+  }
+
+  if (this.state.newBallsCount > 0 && !this.gameOver()) {
+    this.playSound(this.DOMElements.newStageSound);
   }
   this.createBlocksAndBonus();
   for (let i = 0; i < this.state.newBallsCount; ++i) {
     this.createBall();
   }
   this.state.newBallsCount = 0;
+  this.updateUI();
   this.placeBalls();
   this.objects.aim.setOrigin(
     new Point2D(
@@ -182,6 +198,14 @@ GAME.handleBallAndBlockCollision = function (ball, block) {
       const { blocks } = this.objects;
       blocks.splice(blocks.indexOf(block), 1);
     }
+    this.playSound(this.DOMElements.blockBumpSound);
+  }
+};
+
+GAME.playSound = function (sound) {
+  if (this.state.soundOn) {
+    sound.currentTime = 0;
+    sound.play();
   }
 };
 
@@ -205,6 +229,7 @@ GAME.handleBallAndBonusCollision = function (ball, bonus) {
     const index = this.objects.bonuses.indexOf(bonus);
     this.objects.bonuses.splice(index, 1);
     ++this.state.newBallsCount;
+    this.playSound(this.DOMElements.bonusBumpSound);
   }
 };
 
@@ -215,7 +240,6 @@ GAME.endOfStage = function () {
 };
 
 GAME.animate = function () {
-  console.log('running');
   this.state.requests.push(window.requestAnimationFrame(() => {
     this.animate();
     this.redrawObjects();
@@ -256,7 +280,7 @@ GAME.handleMouseDown = function (e) {
   if (!this.objects.aim.isBlocked) {
     this.objects.aim.isActive = true;
     this.objects.aim.handleMouseMove(e);
-    this.objects.aim.draw(this.options.AIM_COLOR);
+    this.redrawObjects();
   }
 };
 
@@ -310,9 +334,10 @@ function handleMouseUp(e) {
 }
 
 GAME.init = function () {
-  renderDOMElement(this.objects.field, document.getElementById('game-field-wrapper'));
+  renderDOMElement(this.objects.field, document.getElementById('app'));
   this.createBlocksAndBonus();
   this.createBall();
+  this.updateUI();
   this.objects.field.addEventListener('mousedown', handleMouseDown);
   this.objects.field.addEventListener('mousemove', handleMouseMove);
   this.objects.field.addEventListener('mouseup', handleMouseUp);

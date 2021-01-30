@@ -1,3 +1,6 @@
+$game-over-modal-width: 400px;
+$game-over-modal-height: 250px;
+
 .game-over {
   position: absolute;
   top: calc(-1 * #{$game-over-modal-height});
@@ -5,7 +8,7 @@
   width: $game-over-modal-width;
   height: $game-over-modal-height;
   font-family: Roboto, sans-serif;
-  transition: transform 0.3s ease-in;
+  transition: transform .3s ease-in;
   &.active {
     transform: translateY(calc(#{$game-over-modal-height} / 2 + 50vh));
   }

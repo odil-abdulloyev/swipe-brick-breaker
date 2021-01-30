@@ -1,6 +1,19 @@
-@import '_reset';
 @import '_constants';
+@import '_reset';
 @import './components/_modal';
+@import './components/_modal-card';
+@import './components/_switch';
 @import '_game-field';
 @import '_game-over';
 @import '_overlay';
+@import '_settings';
+@import '_settings-switch';
+@import '_best-players';
+@import '_about';
+@import '_sidebar';
+
+.app {
+  display: flex;
+  justify-content: center;
+  column-gap: 2rem;
+}

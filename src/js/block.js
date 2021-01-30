@@ -1,4 +1,5 @@
 import { Rectangle } from './lib/lib';
+import gameOption from './game-options';
 
 export default class Block extends Rectangle {
   constructor(context, position, width, height, hp) {
@@ -9,7 +10,7 @@ export default class Block extends Rectangle {
   draw(color) {
     this.context.save();
     this.context.fillStyle = color;
-    this.context.shadowColor = '#ccc';
+    this.context.shadowColor = gameOption.SHADOW_COLOR;
     this.context.shadowOffsetX = 4;
     this.context.shadowOffsetY = 4;
     super.draw(true);

@@ -1,4 +1,5 @@
 import { Circle } from './lib/lib';
+import gameOptions from './game-options';
 
 export default class Bonus extends Circle {
   draw(color) {
@@ -6,7 +7,7 @@ export default class Bonus extends Circle {
     this.context.lineWidth = Math.floor(this.radius * 0.3);
     this.context.strokeStyle = color;
     this.context.fillStyle = color;
-    this.context.shadowColor = '#ccc';
+    this.context.shadowColor = gameOptions.SHADOW_COLOR;
     this.context.shadowOffsetX = 4;
     this.shadowOffsetY = 4;
     this.context.beginPath();

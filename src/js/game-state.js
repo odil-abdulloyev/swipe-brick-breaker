@@ -10,7 +10,10 @@ const gameState = {
   ),
   newBallsCount: 0,
   requests: [],
-  timeouts: []
+  timeouts: [],
+  aimingEnabled: true,
+  soundOn: true,
+  darkModeEnabled: false,
 };
 
 export default gameState;

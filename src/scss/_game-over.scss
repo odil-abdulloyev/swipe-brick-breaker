@@ -1,5 +1,5 @@
-$game-over-modal-width: 400px;
-$game-over-modal-height: 250px;
+$game-over-modal-width: 500px;
+$game-over-modal-height: 320px;
 
 .game-over {
   position: absolute;
@@ -28,9 +28,9 @@ $game-over-modal-height: 250px;
     }
   }
   &__new-game-btn {
-    width: 110px;
-    margin: 40px auto;
-    padding: 10px 15px;
+    margin: 90px auto;
+    font-size: 18px;
+    padding: 12px 18px;
     border: none;
   }
 }

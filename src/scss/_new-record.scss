@@ -1,0 +1,24 @@
+.new-record {
+  &__form {
+    input {
+      display: block;
+      margin: 40px auto 0 auto;
+      background: none;
+      border: 1px solid $border-color;
+      padding: 10px;
+      font-size: 18px;
+      outline: none;
+      color: $text-color;
+
+      &:focus {
+        border-width: 2px;
+      }
+    }
+
+    button {
+      display: block;
+      width: 110px;
+      margin: 30px auto;
+    }
+  }
+}

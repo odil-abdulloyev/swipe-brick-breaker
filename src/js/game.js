@@ -8,13 +8,16 @@ import Ball from './ball';
 import Bonus from './bonus';
 import { Point2D, collisionDetected, distance } from './lib/lib';
 import { renderDOMElement } from './utils/dom';
-import getCachedRandom from './utils/helpers';
+import { getCachedRandom, findByField } from './utils/helpers';
+import DBManager from './utils/db-manager';
 
 const GAME = {
   options: gameOptions,
   objects: gameObjects,
   state: gameState,
-  DOMElements: gameDOMElements
+  DOMElements: gameDOMElements,
+  DBManager: new DBManager('https://swipe-brick-breaker-52559-default-rtdb.firebaseio.com/players.json'),
+  highScores: null
 };
 
 GAME.createBlocksAndBonus = function () {
@@ -121,6 +124,21 @@ GAME.updateUI = function () {
     el.dataset.score = this.state.level - 1;
   });
   this.DOMElements.ballsElement.dataset.balls = this.objects.balls.length;
+  this.highScores.then((response) => {
+    const rows = response.reduce((html, record, i) => {
+      this.DOMElements.recordElement.dataset.record = response.length ? response[0].score : 0;
+      const tr = `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${record.name}</td>
+          <td>${record.score}</td>
+          <td>${record.date}</td>
+        </tr>
+      `;
+      return html + tr;
+    }, '');
+    this.DOMElements.tableElement.querySelector('tbody').innerHTML = rows;
+  });
 };
 
 GAME.startNewStage = function () {
@@ -138,7 +156,15 @@ GAME.startNewStage = function () {
     }
   });
   if (this.gameOver()) {
-    this.DOMElements.gameOverModalElement.classList.add('active');
+    this.highScores
+      .then((response) => findByField(response, 'score', this.state.level - 1))
+      .then((position) => {
+        if (position < this.options.MAX_RECORDS_COUNT - 1) {
+          this.DOMElements.newRecordModalElement.classList.add('active');
+        } else {
+          this.DOMElements.gameOverModalElement.classList.add('active');
+        }
+      });
     this.DOMElements.overlayElement.classList.add('active');
     this.playSound(this.DOMElements.gameOverSound);
   }
@@ -334,6 +360,9 @@ function handleMouseUp(e) {
 }
 
 GAME.init = function () {
+  this.highScores = this.DBManager.getRecords()
+    .then((records) => records.sort((lhs, rhs) => rhs.score - lhs.score))
+    .then((sortedRecords) => sortedRecords.slice(0, this.options.MAX_RECORDS_COUNT));
   renderDOMElement(this.objects.field, document.getElementById('app'));
   this.createBlocksAndBonus();
   this.createBall();
@@ -349,7 +378,10 @@ GAME.reset = function () {
     this.objects.field.width / 2 - gameOptions.BALL_RADIUS,
     this.objects.field.height - 2 * gameOptions.BALL_RADIUS - 1
   );
-  this.objects.aim.origin = this.state.startPosition;
+  this.objects.aim.origin = new Point2D(
+    this.state.startPosition.x + this.options.BALL_RADIUS,
+    this.state.startPosition.y + this.options.BALL_RADIUS
+  );
   this.objects.aim.isActive = false;
   this.objects.aim.isBlocked = false;
   this.objects.balls = [];

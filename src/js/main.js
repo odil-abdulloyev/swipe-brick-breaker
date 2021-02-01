@@ -1,5 +1,6 @@
 import '../scss/style.scss';
 import GAME from './game';
+import { formatDate } from './utils/helpers';
 
 window.onload = () => {
   GAME.init();
@@ -37,5 +38,16 @@ window.onload = () => {
     }
     GAME.strictClearField();
     GAME.redrawObjects();
+  });
+
+  GAME.DOMElements.newRecordModalElement.querySelector('form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const nameField = document.getElementById('name');
+    const { score } = document.querySelector('.new-record .game-over__score').dataset;
+    GAME.DBManager.addRecord({ name: nameField.value, score, date: formatDate(Date.now()) });
+    GAME.DOMElements.newRecordModalElement.classList.remove('active');
+    GAME.DOMElements.overlayElement.classList.remove('active');
+    GAME.reset();
+    GAME.init();
   });
 };

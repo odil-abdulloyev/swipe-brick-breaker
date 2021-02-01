@@ -15,7 +15,8 @@ const gameOptions = {
   BONUS_COLOR: '#3ad361',
   AIM_COLOR: '#a7bed3',
   FIELD_COLOR: '#e5e5e5',
-  SHADOW_COLOR: '#cccccc'
+  SHADOW_COLOR: '#cccccc',
+  MAX_RECORDS_COUNT: 20
 };
 
 export default gameOptions;

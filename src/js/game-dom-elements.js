@@ -1,5 +1,6 @@
 const gameDOMElements = {
   gameOverModalElement: document.querySelector('.game-over'),
+  newRecordModalElement: document.querySelector('.new-record'),
   overlayElement: document.querySelector('#overlay'),
   scoreElements: document.querySelectorAll('[data-score]'),
   ballsElement: document.querySelector('.balls'),
@@ -10,6 +11,7 @@ const gameDOMElements = {
   settingsModalElement: document.querySelector('.settings'),
   bestPlayersModalElement: document.querySelector('.best-players'),
   aboutModalElement: document.querySelector('.about'),
+  tableElement: document.querySelector('.best-players__table'),
   blockBumpSound: new Audio('../../assets/audio/block-bump.mp3'),
   bonusBumpSound: new Audio('../../assets/audio/bonus-bump.mp3'),
   newStageSound: new Audio('../../assets/audio/new-stage.mp3'),

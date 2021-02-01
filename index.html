@@ -44,6 +44,15 @@
     <button class="game-over__new-game-btn modal__button">New Game</button>
   </div>
 
+  <div class="new-record game-over modal">
+    <div class="game-over__title">New Record!</div>
+    <div class="game-over__score" data-score="0">Score: </div>
+    <form class="new-record__form">
+      <input type="text" id="name" placeholder="Enter your name" required>
+      <button class="modal__button" type="submit" id="submit">Submit</button>
+    </form>
+  </div>
+
   <div class="settings modal modal-card">
     <div class="settings__title modal-card__title">Settings</div>
     <div class="modal-card__close-button">&times;</div>
@@ -73,17 +82,19 @@
   <div class="best-players modal modal-card">
     <div class="best-players__title modal-card__title">Best players</div>
     <div class="modal-card__close-button">&times;</div>
-    <table class="best-players__table">
-      <thead>
-        <tr class="row">
-          <th class="header">№</th>
-          <th class="header">Name</th>
-          <th class="header">Score</th>
-          <th class="header">Date</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <div class="table-container">
+      <table class="best-players__table">
+        <thead>
+          <tr class="row">
+            <th class="header">№</th>
+            <th class="header">Name</th>
+            <th class="header">Score</th>
+            <th class="header">Date</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </div>
 
   <div class="about modal modal-card">

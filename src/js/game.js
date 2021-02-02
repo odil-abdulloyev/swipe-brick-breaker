@@ -270,23 +270,9 @@ GAME.animate = function () {
     this.animate();
     this.redrawObjects();
   }));
-  let firstBall = true;
 
+  let firstBall = true;
   this.objects.balls.forEach((ball, i) => {
-    this.handleBallAndWallCollision(ball);
-    this.objects.blocks.forEach((block) => {
-      this.handleBallAndBlockCollision(ball, block);
-    });
-    this.objects.bonuses.forEach((bonus) => {
-      this.handleBallAndBonusCollision(ball, bonus);
-    });
-    if (ball.position.y + ball.height >= this.objects.field.height) {
-      ball.stop();
-      if (firstBall) {
-        firstBall = false;
-        this.state.startPosition = new Point2D(ball.position.x, this.state.startPosition.y);
-      }
-    }
     if (i === 0) {
       ball.move();
     } else {
@@ -294,6 +280,20 @@ GAME.animate = function () {
         ball.move();
       }, this.options.BALL_SHOOT_TIMEOUT * i));
     }
+    if (ball.position.y + ball.height >= this.objects.field.height) {
+      ball.stop();
+      if (firstBall) {
+        firstBall = false;
+        this.state.startPosition = new Point2D(ball.position.x, this.state.startPosition.y);
+      }
+    }
+    this.handleBallAndWallCollision(ball);
+    this.objects.blocks.forEach((block) => {
+      this.handleBallAndBlockCollision(ball, block);
+    });
+    this.objects.bonuses.forEach((bonus) => {
+      this.handleBallAndBonusCollision(ball, bonus);
+    });
   });
   if (this.endOfStage()) {
     this.stopAnimation();

@@ -16,9 +16,9 @@ export default class Ball extends Circle {
   }
 
   normalizeSpeed() {
-    if (this.vy === 0) {
-      this.vx = Math.round(0.85 * this.speed);
-      this.vy = Math.round(0.15 * this.speed);
+    if (Math.abs(this.vy) < 1) {
+      this.vx = +(0.8 * this.speed).toFixed(2);
+      this.vy = +(0.2 * this.speed).toFixed(2);
     }
   }
 

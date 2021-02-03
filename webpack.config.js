@@ -9,6 +9,7 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
+    publicPath: ''
   },
 
   module: {
@@ -28,12 +29,9 @@ module.exports = {
         use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
-        test: /\.(png|svg|jpe?g|gif)$/,
-        use: [
-          {
-            loader: 'file-loader',
-          },
-        ],
+        test: /\.(png|svg|jpe?g|gif|mp3)$/,
+        loader: 'file-loader',
+        type: 'asset/resource'
       },
     ],
   },

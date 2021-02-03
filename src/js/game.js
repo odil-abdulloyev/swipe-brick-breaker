@@ -196,6 +196,58 @@ GAME.handleBallAndBlockCollision = function (ball, block) {
   };
   const pointX = getPoint(ball.center.x, block.position.x, block.position.x + block.width);
   const pointY = getPoint(ball.center.y, block.position.y, block.position.y + block.height);
+
+  // experimental
+  // if (collisionDetected(
+  //   new Ball(
+  //     this.context, new Point2D(ball.position.x + ball.vx, ball.position.y + ball.vy), ball.radius
+  //   ),
+  //   block
+  // )) {
+  //   const xb = ball.center.x;
+  //   const yb = ball.center.y;
+  //   const xa = xb - ball.vx;
+  //   const ya = yb - ball.vy;
+  //   const k = (ya - yb) / (xa - xb);
+  //   const b = ya - k * xa;
+  //   const xmin = block.position.x;
+  //   const xmax = block.position.x + block.width;
+  //   const ymin = block.position.y;
+  //   const ymax = block.position.y + block.position.height;
+  //   const fny = (arg) => k * arg + b;
+  //   const fnx = (arg) => (arg - b) / k;
+  //   const y1 = fny(xmin);
+  //   const y2 = fny(xmax);
+  //   const x1 = fnx(ymin);
+  //   const x2 = fnx(ymax);
+  //
+  //   let dx;
+  //   let dy;
+  //
+  //   if ((y1 >= ymin && y1 <= ymax) || (y2 >= ymin && y2 <= ymax)) {
+  //     if (xa <= xmin) {
+  //       dx = Math.abs(xb - xmin);
+  //       dy = Math.abs(yb - y2);
+  //     } else if (xa >= xmax) {
+  //       dx = Math.abs(xb - xmax);
+  //       dy = Math.abs(yb - y1);
+  //     }
+  //     ball.dx *= -1;
+  //   } else if ((x1 >= xmin && x1 <= xmax) || (x2 >= xmin && x2 <= xmax)) {
+  //     if (ya <= ymin) {
+  //       dx = Math.abs(xb - x1);
+  //       dy = Math.abs(yb - ymin);
+  //     } else if (ya >= ymax) {
+  //       dx = Math.abs(xb - x2);
+  //       dy = Math.abs(yb - ymax);
+  //     }
+  //     ball.dy *= -1;
+  //   }
+  //
+  //   ball.position.x += dx;
+  //   ball.position.y += dy;
+  // }
+
   if (distance(ball.center, new Point2D(pointX, pointY)) <= ball.radius) {
     let nx = ball.center.x - pointX;
     let ny = ball.center.y - pointY;
@@ -207,8 +259,8 @@ GAME.handleBallAndBlockCollision = function (ball, block) {
       nx /= len;
       ny /= len;
       const projection = ball.vx * nx + ball.vy * ny;
-      ball.vx -= Math.round(2 * projection * nx);
-      ball.vy -= Math.round(2 * projection * ny);
+      ball.vx -= +(2 * projection * nx).toFixed(2);
+      ball.vy -= +(2 * projection * ny).toFixed(2);
       ball.normalizeSpeed();
     } else if (pointX === block.position.x + block.width || pointX === block.position.x) {
       ball.position.x = pointX === block.position.x + block.width ? pointX : pointX - ball.width;
@@ -240,7 +292,7 @@ GAME.handleBallAndWallCollision = function (ball) {
     ball.position.x = ball.position.x <= 0 ? 0 : this.objects.field.width - ball.width;
     ball.vx *= -1;
   }
-  if (ball.position.y <= 0 || ball.position.y + ball.height >= this.objects.field.height) {
+  if (ball.position.y <= 0 || ball.position.y + ball.height > this.objects.field.height) {
     ball.position.y = ball.position.y <= 0 ? 0 : this.objects.field.height - ball.height;
     if (ball.position.y <= 0) {
       ball.vy *= -1;
@@ -280,8 +332,7 @@ GAME.animate = function () {
         ball.move();
       }, this.options.BALL_SHOOT_TIMEOUT * i));
     }
-    if (ball.position.y + ball.height >= this.objects.field.height) {
-      ball.stop();
+    if (ball.position.y + ball.height > this.objects.field.height) {
       if (firstBall) {
         firstBall = false;
         this.state.startPosition = new Point2D(ball.position.x, this.state.startPosition.y);
@@ -322,9 +373,9 @@ GAME.handleMouseUp = function () {
   if (!this.objects.aim.isBlocked) {
     this.objects.aim.isActive = false;
     this.objects.aim.isBlocked = true;
-    const calcSpeed = (x) => Math.round(
+    const calcSpeed = (x) => +(
       (this.options.BALL_SPEED * x) / Math.sqrt(this.objects.aim.vx ** 2 + this.objects.aim.vy ** 2)
-    );
+    ).toFixed(2);
     this.objects.balls.forEach((ball) => {
       ball.setVx(calcSpeed(this.objects.aim.vx));
       ball.setVy(calcSpeed(this.objects.aim.vy));

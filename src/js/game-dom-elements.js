@@ -12,10 +12,10 @@ const gameDOMElements = {
   bestPlayersModalElement: document.querySelector('.best-players'),
   aboutModalElement: document.querySelector('.about'),
   tableElement: document.querySelector('.best-players__table'),
-  blockBumpSound: new Audio('../../assets/audio/block-bump.mp3'),
-  bonusBumpSound: new Audio('../../assets/audio/bonus-bump.mp3'),
-  newStageSound: new Audio('../../assets/audio/new-stage.mp3'),
-  gameOverSound: new Audio('../../assets/audio/game-over.mp3')
+  blockBumpSound: new Audio('./assets/audio/block-bump.mp3'),
+  bonusBumpSound: new Audio('./assets/audio/bonus-bump.mp3'),
+  newStageSound: new Audio('./assets/audio/new-stage.mp3'),
+  gameOverSound: new Audio('./assets/audio/game-over.mp3')
 };
 
 gameDOMElements.gameOverModalElement.querySelector('.game-over__new-game-btn').addEventListener('click', () => {

@@ -210,15 +210,17 @@ GAME.handleBallAndBlockCollision = function (ball, block) {
       ball.vx -= +(2 * projection * nx).toFixed(2);
       ball.vy -= +(2 * projection * ny).toFixed(2);
       ball.normalizeSpeed();
-    } else if (pointX === block.position.x + block.width || pointX === block.position.x) {
-      ball.position.x = pointX === block.position.x + block.width ? pointX : pointX - ball.width;
-      ball.vx *= -1;
-    }
-    if (pointY === block.position.y + block.height || pointY === block.position.y) {
-      ball.position.y = pointY === block.position.y + block.height
-        ? pointY
-        : pointY - ball.height;
-      ball.vy *= -1;
+    } else {
+      if (pointX === block.position.x + block.width || pointX === block.position.x) {
+        ball.position.x = pointX === block.position.x + block.width ? pointX : pointX - ball.width;
+        ball.vx *= -1;
+      }
+      if (pointY === block.position.y + block.height || pointY === block.position.y) {
+        ball.position.y = pointY === block.position.y + block.height
+          ? pointY
+          : pointY - ball.height;
+        ball.vy *= -1;
+      }
     }
     if (--block.hp === 0) {
       const { blocks } = this.objects;
@@ -273,13 +275,15 @@ GAME.animate = function () {
 
   let firstBall = true;
   this.objects.balls.forEach((ball, i) => {
-    if (i === 0) {
-      ball.move();
-    } else {
-      this.state.timeouts.push(window.setTimeout(() => {
+    window.requestAnimationFrame(() => {
+      if (i === 0) {
         ball.move();
-      }, this.options.BALL_SHOOT_TIMEOUT * i));
-    }
+      } else {
+        this.state.timeouts.push(window.setTimeout(() => {
+          ball.move();
+        }, this.options.BALL_SHOOT_TIMEOUT * i));
+      }
+    });
     if (ball.position.y + ball.height > this.objects.field.height) {
       if (firstBall) {
         firstBall = false;

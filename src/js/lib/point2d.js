@@ -1,9 +1,10 @@
-export default class Point2D {
-  constructor(x, y) {
-    if (typeof x !== 'number' || typeof y !== 'number') {
-      throw new TypeError('Invalid type of argument');
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var Point2D = /** @class */ (function () {
+    function Point2D(x, y) {
+        this.x = x;
+        this.y = y;
     }
-    this.x = x;
-    this.y = y;
-  }
-}
+    return Point2D;
+}());
+exports.default = Point2D;
